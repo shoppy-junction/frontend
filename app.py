@@ -87,25 +87,27 @@ def render_content(tab):
         ])
     elif tab == 'tab-2':
         return html.Div([
-            dcc.Graph(
-                id='telia-graph',
-            ),
             html.Div([
-                dcc.Dropdown(
-                    id='telia-dropdown',
-                    options=[
-                        {'label': 'Sunday', 'value': 'sun'},
-                        {'label': 'Monday', 'value': 'mon'},
-                        {'label': 'Tuesday', 'value': 'tue'},
-                        {'label': 'Wednesday', 'value': 'wed'}
-                    ],
-                    value='sun',
-                )],
-                     style = dict(
-                        autosize=False,
-                        width=1000,
-                     ),
-            ),
+                dcc.Graph(
+                    id='telia-graph',
+                ),
+                html.Div([
+                    dcc.Dropdown(
+                        id='telia-dropdown',
+                        options=[
+                            {'label': 'Sunday', 'value': 'sun'},
+                            {'label': 'Monday', 'value': 'mon'},
+                            {'label': 'Tuesday', 'value': 'tue'},
+                            {'label': 'Wednesday', 'value': 'wed'}
+                        ],
+                        value='sun',
+                    )],
+                         style = dict(
+                             autosize=False,
+                             width=700,
+                         ),
+                ),
+            ], className="labeledchart"),
             dcc.Graph(
                 id='time-chart',
                 figure={
@@ -153,7 +155,7 @@ def render_content(tab):
                 #            )
                 #            }
     )
-        ])
+        ], className="tabtwo")
 
 # Slider -> time text
 @app.callback(Output('time_range_text', 'children'),

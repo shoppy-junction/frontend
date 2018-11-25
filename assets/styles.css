@@ -34,3 +34,14 @@ body {
   margin-right: auto;
   width: 80%;
 }
+
+.labeledchart {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+.tabtwo {
+  display: flex;
+  align-items: center;
+}
