@@ -4,6 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
+from plotly import tools
 from dash.dependencies import Input, Output
 from datetime import datetime
 # import colorlover as cl
@@ -32,8 +33,9 @@ moneys_points = list(moneys.groups.keys())
 # x_range = df2['SepalWidth'].min()
 # y_range = df2['SepalWidth'].min()
 
-time_data = {309: 'Front', 342: 'Center aisles', 430: 'Back'}
-money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
+time_data = [309, 342, 430]
+money_data = [60, 26, 17]
+labels = ['Front', 'Center aisles', 'Back']
 
 app.layout = html.Div(children=[
     html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
@@ -86,23 +88,42 @@ app.layout = html.Div(children=[
         id='time-chart',
         figure={
             'data': [
-                go.Pie(labels=list(time_data.values()), values=list(time_data.keys()))
-                ],
+                {
+                    "values": time_data,
+                    "labels": labels,
+                    "domain": {"x": [0, .48]},
+                    "name": 'Time spent per region',
+                    "hole": .3,
+                    "type": "pie"
+                },
+                {
+                    "values": money_data,
+                    "labels": labels,
+                    "domain": {"x": [.52, 1]},
+                    "name": 'Time spent per region',
+                    "hole": .3,
+                    "type": "pie"
+                }
+            ],
             'layout':go.Layout(
             title='Time spent per region',
             )
-            }    
-    ),
-    dcc.Graph(
-        id='money-chart',
-        figure={
-            'data': [
-                go.Pie(labels=list(money_data.values()), values=list(money_data.keys()))
-                ],
-            'layout':go.Layout(
-            title='Money spent per region',
-            )
-       }
+            }
+#        figure={
+#            'data': [
+#                go.Pie(labels=labels, 
+#                    values=time_data,
+#                    name='Time spent per region'
+#                    ),
+#                go.Pie(labels=labels, 
+#                    values=money_data,
+#                    name='Money spent per region'
+#                    )
+#                ],
+#            'layout':go.Layout(
+#            title='Time spent per region',
+#            )
+#            }
     )
 ])
 
@@ -239,25 +260,49 @@ def update_figure(selected_day):
         df_filtered = df_telia[df_telia.time.str.startswith('23.1.2018')]
     elif selected_day == 'wed':
         df_filtered = df_telia[df_telia.time.str.startswith('24.1.2018')]
+    elif selected_day == 'thu':
+        df_filtered = df_telia[df_telia.time.str.startswith('25.1.2018')]
+    elif selected_day == 'fri':
+        df_filtered = df_telia[df_telia.time.str.startswith('26.1.2018')]
+    elif selected_day == 'sat':
+        df_filtered = df_telia[df_telia.time.str.startswith('27.1.2018')]
     else:
-        print(selected_day)
-        df_filtered = df_telia #[df_telia.time.str.startswith('21.1.2018') | df_telia.time.str.startswith('22.1.2018') | df_telia.time.str.startswith('23.1.2018') | df_telia.time.str.startswith('24.1.2018')| df_telia.time.str.startswith('25.1.2018')| df_telia.time.str.startswith('26.1.2018') | df_telia.time.str.startswith('27.1.2018')]
+        df_filtered = df_telia
     def hour(ts):
         return int(ts.time[-8:-6])
     df_filtered['hour'] = df_filtered.apply(hour, axis=1)
     df_sorted = df_filtered.sort_values(by='hour')
+    # x=df_sorted['hour'],
+    # y=df_sorted['count']/500
+    # import numpy as np
+    # z = np.polyfit(x, y, 3)
+    # f = np.poly1d(z)
+    # xfit = np.linspace(x[0], x[-1], 50)
+    # yfit = f(xfit)
     return {
             'data': [
                 go.Bar(
                     x=df_sorted['hour'],
                     y=df_sorted['count']/500
                     ),
+                #go.Scatter(
+                #    x=xfit,
+                #    y=yfit,
+                #    mode='lines',
+                #    name='Fit'
+                #    )
             ],
             'layout': go.Layout(
-                title="Longitudinal Store Activity Over a Day",
+                title="Daily Store Activity by Hour",
                 autosize=False,
                 width=800,
-                height=800
+                height=800,
+                xaxis={
+                    'title':'Hour'
+                    },
+                yaxis={
+                    'title':'Activity'
+                    }
             )
         }
 
