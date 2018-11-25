@@ -100,13 +100,13 @@ app.layout = html.Div(children=[
                     "values": money_data,
                     "labels": labels,
                     "domain": {"x": [.52, 1]},
-                    "name": 'Time spent per region',
+                    "name": 'Money spent per region',
                     "hole": .3,
                     "type": "pie"
                 }
             ],
             'layout':go.Layout(
-            title='Time spent per region',
+            title='Time spent per region                       Money spent per region',
             )
             }
 #        figure={
