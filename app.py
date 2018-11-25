@@ -38,7 +38,6 @@ money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
 app.layout = html.Div(children=[
     html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
 
-
     html.Div([
         html.H5(
             'Time Period',
@@ -56,7 +55,8 @@ app.layout = html.Div(children=[
         # step=1,
         min=min_time,
         max=max_time,
-        value=[min_time, max_time]
+        value=[min_time, max_time],
+        className='slider'
     ),
 
     html.Div([

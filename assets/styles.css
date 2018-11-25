@@ -3,6 +3,9 @@
 }
 
 .header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
   display: flex;
   justify-content:space-between;
 }
@@ -10,4 +13,10 @@
 .heatmaps {
   display: flex;
   justify-content:center;
+}
+
+.slider {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
