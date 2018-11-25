@@ -14,7 +14,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Shoppy Insights'
 
 # df = pd.read_csv('processed_output.csv')
-df = pd.read_csv('../backend/data/location_data_processed.csv')
+# df = pd.read_csv('../backend/data/location_data_processed.csv')
+df = pd.read_csv('../backend/data/noisy_location_processed.csv')
 df2 = pd.read_csv('../backend/data/purchase_data_processed.csv')
 
 min_time = min(df["timestamp"].min(), df2["timestamp"].min())
@@ -22,7 +23,6 @@ max_time = max(df["timestamp"].max(), df2["timestamp"].max())
 
 moneys = df2.groupby(['x','y'])
 moneys_points = list(moneys.groups.keys())
-df3 = pd.read_csv('../backend/data/noisy_location_processed.csv')
 # df2 = pd.read_csv('fake_purchase_data.csv')
 # df = pd.read_csv('test_data_processed_swampped.csv')
 
@@ -73,114 +73,11 @@ app.layout = html.Div(children=[
     #             style={'text-align': 'right'}
     #         ),
     #     ],
-
     dcc.Graph(
         id='money-graph',
-        figure={
-            'data': [
-                go.Histogram2dContour(
-                    x=[p[0] for p in moneys_points],
-                    y=[p[1] for p in moneys_points],
-                    z=[sum(moneys.get_group(p)['price']) for p in moneys_points],
-                    name='density',
-                    # mode='markers',
-                    ncontours=20,
-                    colorscale='Greens',
-                    reversescale=True,
-                    # showscale=False
-                ),
-                # go.Scatter(
-                #     x=[p[0] for p in moneys_points],
-                #     y=[p[1] for p in moneys_points],
-                #     text=[sum(moneys.get_group(p)['price']) for p in moneys_points],
-                #     name='density',
-                #     mode='markers',
-                #     # ncontours=20,
-                #     # colorscale=colorscale,
-                #     # showscale=False
-                # )
-            ],
-            'layout': go.Layout(
-                images= [dict(
-                    source= 'assets/store_with_grid.jpg',
-                    xref= "paper",
-                    yref= "paper",
-                    x= 0,
-                    y= 1,
-                    sizex= 1,
-                    sizey= 1,
-                    sizing= "stretch",
-                    opacity= 0.5,
-                    layer= "above")],
-                title="Shopper Activity",
-                showlegend=False,
-                autosize=False,
-                width=800,
-                height=800,
-                hovermode='closest',
-                bargap=0,
-
-                # showticklabels
-                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
-                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
-
-                yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
-                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
-            )
-        }
     ),
     dcc.Graph(
         id='noisy-graph',
-        figure={
-            'data': [
-                go.Histogram2dContour(
-                    x=df3['x'],
-                    y=df3['y'],
-                    name='density',
-                    # mode='markers',
-                    ncontours=40,
-                    colorscale='Hot',
-                    reversescale=True,
-                    # showscale=False
-                ),
-                # go.Scatter(
-                #     x=df['x'],
-                #     y=df['y'],
-                #     name='density',
-                #     mode='markers',
-                #     # ncontours=20,
-                #     # colorscale=colorscale,
-                #     # showscale=False
-                # )
-            ],
-            'layout': go.Layout(
-                images= [dict(
-                    source= 'assets/store_with_grid.jpg',
-                    xref= "paper",
-                    yref= "paper",
-                    x= 0,
-                    y= 1,
-                    sizex= 1,
-                    sizey= 1,
-                    sizing= "stretch",
-                    opacity= 0.5,
-                    layer= "above")],
-                title="Shopper Activity",
-                showlegend=False,
-                autosize=False,
-                width=800,
-                height=800,
-                hovermode='closest',
-                bargap=0,
-
-                # showticklabels
-                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
-                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
-
-                yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
-                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
-            )
-        }
     ),
     dcc.Graph(
         id='telia-graph',
@@ -202,6 +99,111 @@ app.layout = html.Div(children=[
               [Input('time_slider', 'value')])
 def update_time_text(time_slider):
     return "{} - {}".format(datetime.fromtimestamp(time_slider[0]).strftime('%H:%M:%S'), datetime.fromtimestamp(time_slider[1]).strftime('%H:%M:%S on %a, %b %d'))
+
+# Slider -> Green graph
+@app.callback(
+    dash.dependencies.Output('money-graph', 'figure'),
+    [dash.dependencies.Input('time_slider', 'value')])
+def update_money_figure(time_slider):
+    var1 = df2['timestamp'] >= time_slider[0]
+    var2 = df2['timestamp'] <= time_slider[1]
+    filtered_df2 = df2[var1 & var2].reset_index()
+
+    moneys = filtered_df2.groupby(['x','y'])
+    moneys_points = list(moneys.groups.keys())
+
+    return {
+        'data': [
+            go.Histogram2dContour(
+                x=[p[0] for p in moneys_points],
+                y=[p[1] for p in moneys_points],
+                z=[sum(moneys.get_group(p)['price']) for p in moneys_points],
+                name='density',
+                # mode='markers',
+                    ncontours=40,
+                colorscale='Greens',
+                reversescale=True,
+                # showscale=False
+                ),
+            ],
+        'layout': go.Layout(
+            images= [dict(
+                source= 'assets/store_with_grid.jpg',
+                xref= "paper",
+                yref= "paper",
+                x= 0,
+                y= 1,
+                sizex= 1,
+                sizey= 1,
+                sizing= "stretch",
+                opacity= 0.5,
+                layer= "above")],
+            title="Shopper Activity",
+            showlegend=False,
+            autosize=False,
+            width=800,
+            height=800,
+            hovermode='closest',
+            bargap=0,
+
+                # showticklabels
+                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
+                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
+
+                yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
+                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
+        )
+    }
+
+# Slider -> Red graph
+@app.callback(
+    dash.dependencies.Output('noisy-graph', 'figure'),
+    [dash.dependencies.Input('time_slider', 'value')])
+def update_noisy_figure(time_slider):
+    var1 = df['timestamp'] >= time_slider[0]
+    var2 = df['timestamp'] <= time_slider[1]
+    filtered_df = df[var1 & var2].reset_index()
+    return {
+        'data': [
+            go.Histogram2dContour(
+                x=filtered_df['x'],
+                y=filtered_df['y'],
+                name='density',
+                # mode='markers',
+                ncontours=40,
+                colorscale='Hot',
+                reversescale=True,
+                # showscale=False
+                ),
+            ],
+        'layout': go.Layout(
+            images= [dict(
+                source= 'assets/store_with_grid.jpg',
+                xref= "paper",
+                yref= "paper",
+                x= 0,
+                y= 1,
+                sizex= 1,
+                sizey= 1,
+                sizing= "stretch",
+                opacity= 0.5,
+                layer= "above")],
+            title="Shopper Activity",
+            showlegend=False,
+            autosize=False,
+            width=800,
+            height=800,
+            hovermode='closest',
+            bargap=0,
+
+                # showticklabels
+                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
+                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
+
+                yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
+                           showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
+        )
+    }
 
 @app.callback(
     dash.dependencies.Output('telia-graph', 'figure'),
