@@ -36,15 +36,15 @@ time_data = {309: 'Front', 342: 'Center aisles', 430: 'Back'}
 money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
 
 app.layout = html.Div(children=[
-    html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '42'}),
+    html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
 
 
     html.Div([
-        html.H5(
+        html.H3(
             'Time Period',
             id='time_range_label',
         ),
-        html.H5(
+        html.H3(
             '',
             id='time_range_text',
         ),
@@ -150,7 +150,11 @@ def update_money_figure(time_slider):
                 sizing= "stretch",
                 opacity= 0.5,
                 layer= "above")],
-            title="Shopper Activity",
+            title="Shopper Purchase Density",
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
             showlegend=False,
             autosize=False,
             width=800,
@@ -200,7 +204,11 @@ def update_noisy_figure(time_slider):
                 sizing= "stretch",
                 opacity= 0.5,
                 layer= "above")],
-            title="Shopper Activity",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+            title="Shopper Location Density",
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
             showlegend=False,
             autosize=False,
             width=800,
@@ -246,7 +254,7 @@ def update_figure(selected_day):
                     ),
             ],
             'layout': go.Layout(
-                title="Longitudinal Store Activity",
+                title="Longitudinal Store Activity Over a Day",
                 autosize=False,
                 width=800,
                 height=800
