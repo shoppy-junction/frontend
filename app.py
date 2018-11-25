@@ -239,9 +239,14 @@ def update_figure(selected_day):
         df_filtered = df_telia[df_telia.time.str.startswith('23.1.2018')]
     elif selected_day == 'wed':
         df_filtered = df_telia[df_telia.time.str.startswith('24.1.2018')]
+    elif selected_day == 'thu':
+        df_filtered = df_telia[df_telia.time.str.startswith('25.1.2018')]
+    elif selected_day == 'fri':
+        df_filtered = df_telia[df_telia.time.str.startswith('26.1.2018')]
+    elif selected_day == 'sat':
+        df_filtered = df_telia[df_telia.time.str.startswith('27.1.2018')]
     else:
-        print(selected_day)
-        df_filtered = df_telia #[df_telia.time.str.startswith('21.1.2018') | df_telia.time.str.startswith('22.1.2018') | df_telia.time.str.startswith('23.1.2018') | df_telia.time.str.startswith('24.1.2018')| df_telia.time.str.startswith('25.1.2018')| df_telia.time.str.startswith('26.1.2018') | df_telia.time.str.startswith('27.1.2018')]
+        df_filtered = df_telia
     def hour(ts):
         return int(ts.time[-8:-6])
     df_filtered['hour'] = df_filtered.apply(hour, axis=1)
@@ -254,10 +259,16 @@ def update_figure(selected_day):
                     ),
             ],
             'layout': go.Layout(
-                title="Longitudinal Store Activity",
+                title="Daily store activity by hour",
                 autosize=False,
                 width=800,
-                height=800
+                height=800,
+                xaxis={
+                    'title':'Hour'
+                    },
+                yaxis={
+                    'title':'Activity'
+                    }
             )
         }
 
