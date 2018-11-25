@@ -57,3 +57,14 @@ body {
     background-color: #fafbfc;
     font-size: 20px;
 }
+
+.labeledchart {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+.tabtwo {
+  display: flex;
+  align-items: center;
+}
