@@ -106,7 +106,9 @@ app.layout = html.Div(children=[
                 }
             ],
             'layout':go.Layout(
-            title='Time spent per region                       Money spent per region',
+                title='Time spent per region                    Money spent per region      .',
+                autosize=False,
+                width=800,
             )
             }
 #        figure={
