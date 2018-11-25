@@ -40,7 +40,6 @@ labels = ['Front', 'Center aisles', 'Back']
 app.layout = html.Div(children=[
     html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
 
-
     html.Div([
         html.H3(
             'Time Period',
@@ -59,6 +58,7 @@ app.layout = html.Div(children=[
         min=min_time,
         max=max_time,
         value=[min_time, max_time],
+        className='slider'
     ),
 
     html.Div([
@@ -107,6 +107,10 @@ app.layout = html.Div(children=[
             ],
             'layout':go.Layout(
             title='Time spent per region                       Money spent per region',
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
             )
             }
 #        figure={
@@ -297,6 +301,10 @@ def update_figure(selected_day):
                 autosize=False,
                 width=800,
                 height=800,
+                titlefont=dict(family='Fredoka One', size=30, color='white'),
+                font=dict(family='Catamaran', size=20, color='white'),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
                 xaxis={
                     'title':'Hour'
                     },
