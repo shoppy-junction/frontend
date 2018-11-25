@@ -1,19 +1,19 @@
-h1, h2 {
+h1 {
 	font-family: 'Fredoka One', 'Times New Roman', Times, serif;
 	text-shadow: 2px 2px black;
 	color: white;
 }
 
-h3 {
+h2 {
 	color: white;
-	font-size: 30;
 }
 
 body {
     font-family: 'Catamaran', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-image: linear-gradient(to right, #96c4ce, #c2e7ef);
-    margin: 0;
     color: black;
+    margin: 10px;
+    padding: 10px;
 }
 
 .header {
@@ -55,7 +55,7 @@ body {
     border-right: 0px !important;
     border-bottom: 0px !important;
     background-color: #fafbfc;
-    font-size: 20px;
+    font-size: 23px;
 }
 
 .labeledchart {

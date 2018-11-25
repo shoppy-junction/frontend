@@ -36,7 +36,7 @@ moneys_points = list(moneys.groups.keys())
 
 time_data = [309, 342, 430]
 money_data = [60, 26, 17]
-labels = ['Front', 'Center aisles', 'Back']
+labels = ['Front', 'Center Aisles', 'Back']
 
 app.layout = html.Div(children=[
     html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
@@ -54,11 +54,11 @@ def render_content(tab):
     if tab == 'tab-1':
         return html.Div([
             html.Div([
-                html.H3(
+                html.H2(
                     'Time Period',
                     id='time_range_label',
                 ),
-                html.H3(
+                html.H2(
                     '',
                     id='time_range_text',
                 ),
@@ -116,7 +116,7 @@ def render_content(tab):
                             "values": time_data,
                             "labels": labels,
                             "domain": {"x": [0, .48]},
-                            "name": 'Time spent per region',
+                            "name": 'Time Spent by Region',
                             "hole": .3,
                             "type": "pie"
                         },
@@ -124,14 +124,14 @@ def render_content(tab):
                             "values": money_data,
                             "labels": labels,
                             "domain": {"x": [.52, 1]},
-                            "name": 'Money spent per region',
+                            "name": 'Money Spent by Region',
                             "hole": .3,
                             "type": "pie"
                         }
                     ],
                     'layout':go.Layout(
-                        title='Time spent per region                   Money spent per region',
-                        titlefont=dict(family='Fredoka One', size=30, color='white'),
+                        title='Time Spent by Region    Money Spent By Region',
+                        titlefont=dict(family='Fredoka One', size=38, color='white'),
                         font=dict(family='Catamaran', size=20, color='white'),
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
@@ -139,21 +139,6 @@ def render_content(tab):
                         width=1000,
                     )
                 }
-                #        figure={
-                #            'data': [
-                #                go.Pie(labels=labels,
-                #                    values=time_data,
-                #                    name='Time spent per region'
-                #                    ),
-                #                go.Pie(labels=labels,
-                #                    values=money_data,
-                #                    name='Money spent per region'
-                #                    )
-                #                ],
-                #            'layout':go.Layout(
-                #            title='Time spent per region',
-                #            )
-                #            }
     )
         ], className="tabtwo")
 
@@ -182,11 +167,9 @@ def update_money_figure(time_slider):
                 y=[p[1] for p in moneys_points],
                 z=[sum(moneys.get_group(p)['price']) for p in moneys_points],
                 name='density',
-                # mode='markers',
                     ncontours=40,
                 colorscale='Greens',
                 reversescale=True,
-                # showscale=False
                 ),
             ],
         'layout': go.Layout(
@@ -202,7 +185,7 @@ def update_money_figure(time_slider):
                 opacity= 0.5,
                 layer= "above")],
             title="Shopper Purchase Density",
-            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            titlefont=dict(family='Fredoka One', size=38, color='white'),
             font=dict(family='Catamaran', size=20, color='white'),
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
@@ -214,7 +197,7 @@ def update_money_figure(time_slider):
             bargap=0,
 
                 # showticklabels
-                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
+                xaxis=dict(title='Heat Map for Euros Spent Per Hour', titlefont=dict(family='Catamaran', size=30, color='white'),range=[0,20], linewidth=2, linecolor='#444',
                            showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
 
                 yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
@@ -258,7 +241,7 @@ def update_noisy_figure(time_slider):
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
             title="Shopper Location Density",
-            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            titlefont=dict(family='Fredoka One', size=38, color='white'),
             font=dict(family='Catamaran', size=20, color='white'),
             showlegend=False,
             autosize=False,
@@ -268,7 +251,7 @@ def update_noisy_figure(time_slider):
             bargap=0,
 
                 # showticklabels
-                xaxis=dict(range=[0,20], linewidth=2, linecolor='#444',
+                xaxis=dict(title='Heat Map for Shoppers Per Hour', titlefont=dict(family='Catamaran', size=30, color='white'), range=[0,20], linewidth=2, linecolor='#444',
                            showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
 
                 yaxis=dict(range=[0,23],linewidth=2,linecolor='#444',
@@ -327,7 +310,7 @@ def update_figure(selected_day):
                 autosize=False,
                 width=800,
                 height=800,
-                titlefont=dict(family='Fredoka One', size=30, color='white'),
+                titlefont=dict(family='Fredoka One', size=38, color='white'),
                 font=dict(family='Catamaran', size=20, color='white'),
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
