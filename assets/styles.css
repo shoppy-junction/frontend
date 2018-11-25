@@ -15,6 +15,11 @@ body {
     color: white;
 }
 
-.rc-slider-step {
-	width: 500px;
+.header {
+  display: flex;
+  justify-content:space-between;
 }
+
+.heatmaps {
+  display: flex;
+  justify-content:center;
