@@ -13,6 +13,7 @@ external_stylesheets = ['https://fonts.googleapis.com/css?family=Catamaran', 'ht
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Shoppy Insights'
+app.config['suppress_callback_exceptions']=True
 
 # df = pd.read_csv('processed_output.csv')
 # df = pd.read_csv('../backend/data/location_data_processed.csv')
@@ -40,96 +41,119 @@ labels = ['Front', 'Center aisles', 'Back']
 app.layout = html.Div(children=[
     html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
 
-    html.Div([
-        html.H3(
-            'Time Period',
-            id='time_range_label',
-        ),
-        html.H3(
-            '',
-            id='time_range_text',
-        ),
-    ], className='header'),
-
-    dcc.RangeSlider(
-        id='time_slider',
-        # count=1,
-        # step=1,
-        min=min_time,
-        max=max_time,
-        value=[min_time, max_time],
-        className='slider'
-    ),
-
-    html.Div([
-        dcc.Graph(
-            id='noisy-graph',
-        ),
-        dcc.Graph(
-            id='money-graph',
-        ),
-    ], className='heatmaps'
-    ),
-
-    dcc.Graph(
-        id='telia-graph',
-    ),
-    dcc.Dropdown(
-        id='telia-dropdown',
-        options=[
-            {'label': 'Sunday', 'value': 'sun'},
-            {'label': 'Monday', 'value': 'mon'},
-            {'label': 'Tuesday', 'value': 'tue'},
-            {'label': 'Wednesday', 'value': 'wed'}
-        ],
-        value='sun'
-    ),
-    dcc.Graph(
-        id='time-chart',
-        figure={
-            'data': [
-                {
-                    "values": time_data,
-                    "labels": labels,
-                    "domain": {"x": [0, .48]},
-                    "name": 'Time spent per region',
-                    "hole": .3,
-                    "type": "pie"
-                },
-                {
-                    "values": money_data,
-                    "labels": labels,
-                    "domain": {"x": [.52, 1]},
-                    "name": 'Money spent per region',
-                    "hole": .3,
-                    "type": "pie"
-                }
-            ],
-            'layout':go.Layout(
-            title='Time spent per region                       Money spent per region',
-            titlefont=dict(family='Fredoka One', size=30, color='white'),
-            font=dict(family='Catamaran', size=20, color='white'),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            )
-            }
-#        figure={
-#            'data': [
-#                go.Pie(labels=labels, 
-#                    values=time_data,
-#                    name='Time spent per region'
-#                    ),
-#                go.Pie(labels=labels, 
-#                    values=money_data,
-#                    name='Money spent per region'
-#                    )
-#                ],
-#            'layout':go.Layout(
-#            title='Time spent per region',
-#            )
-#            }
-    )
+    dcc.Tabs(id="tabs", value='tab-1', children=[
+        dcc.Tab(label='Tab one', value='tab-1'),
+        dcc.Tab(label='Tab two', value='tab-2'),
+    ]),
+    html.Div(id='tabs-content')
 ])
+
+@app.callback(Output('tabs-content', 'children'),
+              [Input('tabs', 'value')])
+def render_content(tab):
+    if tab == 'tab-1':
+        return html.Div([
+            html.Div([
+                html.H3(
+                    'Time Period',
+                    id='time_range_label',
+                ),
+                html.H3(
+                    '',
+                    id='time_range_text',
+                ),
+            ], className='header'),
+
+            dcc.RangeSlider(
+                id='time_slider',
+                # count=1,
+                # step=1,
+                min=min_time,
+                max=max_time,
+                value=[min_time, max_time],
+                className='slider'
+            ),
+
+            html.Div([
+                dcc.Graph(
+                    id='noisy-graph',
+                ),
+                dcc.Graph(
+                    id='money-graph',
+                ),
+            ], className='heatmaps'
+            ),
+
+        ])
+    elif tab == 'tab-2':
+        return html.Div([
+            dcc.Graph(
+                id='telia-graph',
+            ),
+            html.Div([
+                dcc.Dropdown(
+                    id='telia-dropdown',
+                    options=[
+                        {'label': 'Sunday', 'value': 'sun'},
+                        {'label': 'Monday', 'value': 'mon'},
+                        {'label': 'Tuesday', 'value': 'tue'},
+                        {'label': 'Wednesday', 'value': 'wed'}
+                    ],
+                    value='sun',
+                )],
+                     style = dict(
+                        autosize=False,
+                        width=1000,
+                     ),
+            ),
+            dcc.Graph(
+                id='time-chart',
+                figure={
+                    'data': [
+                        {
+                            "values": time_data,
+                            "labels": labels,
+                            "domain": {"x": [0, .48]},
+                            "name": 'Time spent per region',
+                            "hole": .3,
+                            "type": "pie"
+                        },
+                        {
+                            "values": money_data,
+                            "labels": labels,
+                            "domain": {"x": [.52, 1]},
+                            "name": 'Money spent per region',
+                            "hole": .3,
+                            "type": "pie"
+                        }
+                    ],
+                    'layout':go.Layout(
+                        title='Time spent per region                   Money spent per region',
+                        titlefont=dict(family='Fredoka One', size=30, color='white'),
+                        font=dict(family='Catamaran', size=20, color='white'),
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        autosize=False,
+                        width=1000,
+                    )
+                }
+                #        figure={
+                #            'data': [
+                #                go.Pie(labels=labels,
+                #                    values=time_data,
+                #                    name='Time spent per region'
+                #                    ),
+                #                go.Pie(labels=labels,
+                #                    values=money_data,
+                #                    name='Money spent per region'
+                #                    )
+                #                ],
+                #            'layout':go.Layout(
+                #            title='Time spent per region',
+                #            )
+                #            }
+    )
+        ])
 
 # Slider -> time text
 @app.callback(Output('time_range_text', 'children'),
