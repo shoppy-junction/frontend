@@ -9,7 +9,7 @@ from dash.dependencies import Input, Output
 from datetime import datetime
 # import colorlover as cl
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://fonts.googleapis.com/css?family=Catamaran', 'https://fonts.googleapis.com/css?family=Fredoka One']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Shoppy Insights'
@@ -38,14 +38,14 @@ money_data = [60, 26, 17]
 labels = ['Front', 'Center aisles', 'Back']
 
 app.layout = html.Div(children=[
-    html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
+    html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
 
     html.Div([
-        html.H5(
+        html.H3(
             'Time Period',
             id='time_range_label',
         ),
-        html.H5(
+        html.H3(
             '',
             id='time_range_text',
         ),
@@ -106,9 +106,13 @@ app.layout = html.Div(children=[
                 }
             ],
             'layout':go.Layout(
-                title='Time spent per region                    Money spent per region      .',
+            title='Time spent per region                   Money spent per region',
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
                 autosize=False,
-                width=800,
+                width=1000,
             )
             }
 #        figure={
@@ -173,7 +177,11 @@ def update_money_figure(time_slider):
                 sizing= "stretch",
                 opacity= 0.5,
                 layer= "above")],
-            title="Shopper Activity",
+            title="Shopper Purchase Density",
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
             showlegend=False,
             autosize=False,
             width=800,
@@ -223,7 +231,11 @@ def update_noisy_figure(time_slider):
                 sizing= "stretch",
                 opacity= 0.5,
                 layer= "above")],
-            title="Shopper Activity",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+            title="Shopper Location Density",
+            titlefont=dict(family='Fredoka One', size=30, color='white'),
+            font=dict(family='Catamaran', size=20, color='white'),
             showlegend=False,
             autosize=False,
             width=800,
@@ -287,10 +299,14 @@ def update_figure(selected_day):
                 #    )
             ],
             'layout': go.Layout(
-                title="Daily store activity by hour",
+                title="Daily Store Activity by Hour",
                 autosize=False,
                 width=800,
                 height=800,
+                titlefont=dict(family='Fredoka One', size=30, color='white'),
+                font=dict(family='Catamaran', size=20, color='white'),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
                 xaxis={
                     'title':'Hour'
                     },
