@@ -36,7 +36,7 @@ time_data = {309: 'Front', 342: 'Center aisles', 430: 'Back'}
 money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
 
 app.layout = html.Div(children=[
-    html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
+    html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '42'}),
 
     html.H5(
         '',
@@ -50,7 +50,7 @@ app.layout = html.Div(children=[
         # step=1,
         min=min_time,
         max=max_time,
-        value=[min_time, max_time]
+        value=[min_time, max_time],
     ),
 
     # html.Div(

@@ -14,3 +14,7 @@ body {
     margin: 0;
     color: white;
 }
+
+.rc-slider-step {
+	width: 500px;
+}
