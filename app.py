@@ -108,6 +108,7 @@ def render_content(tab):
                          ),
                 ),
             ], className="labeledchart"),
+            html.Div([
             dcc.Graph(
                 id='time-chart',
                 figure={
@@ -139,7 +140,7 @@ def render_content(tab):
                         width=1000,
                     )
                 }
-    )
+    )], className="timeChart")
         ], className="tabtwo")
 
 # Slider -> time text
