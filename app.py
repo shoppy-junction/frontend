@@ -32,8 +32,8 @@ moneys_points = list(moneys.groups.keys())
 # x_range = df2['SepalWidth'].min()
 # y_range = df2['SepalWidth'].min()
 
-time_data = {309: 'front', 342: 'middle', 430: 'end'}
-money_data = {60: 'front', 26: 'middle', 17: 'end'}
+time_data = {309: 'Front', 342: 'Center aisles', 430: 'Back'}
+money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
 
 app.layout = html.Div(children=[
     html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
@@ -91,6 +91,28 @@ app.layout = html.Div(children=[
             {'label': 'Wednesday', 'value': 'wed'}
         ],
         value='sun'
+    ),
+    dcc.Graph(
+        id='time-chart',
+        figure={
+            'data': [
+                go.Pie(labels=list(time_data.values()), values=list(time_data.keys()))
+                ],
+            'layout':go.Layout(
+            title='Time spent per region',
+            )
+            }    
+    ),
+    dcc.Graph(
+        id='money-chart',
+        figure={
+            'data': [
+                go.Pie(labels=list(money_data.values()), values=list(money_data.keys()))
+                ],
+            'layout':go.Layout(
+            title='Money spent per region',
+            )
+       }
     )
 ])
 
@@ -213,14 +235,15 @@ def update_figure(selected_day):
     df_telia = df_telia[df_telia.dominant_zone == 212]
     if selected_day == 'sun':
         df_filtered = df_telia[df_telia.time.str.startswith('21.1.2018')]
-    if selected_day == 'mon':
+    elif selected_day == 'mon':
         df_filtered = df_telia[df_telia.time.str.startswith('22.1.2018')]
-    if selected_day == 'tue':
+    elif selected_day == 'tue':
         df_filtered = df_telia[df_telia.time.str.startswith('23.1.2018')]
-    if selected_day == 'wed':
+    elif selected_day == 'wed':
         df_filtered = df_telia[df_telia.time.str.startswith('24.1.2018')]
     else:
-        df_filtered = df_telia[df_telia.time.str.startswith('21.1.2018') | df_telia.time.str.startswith('22.1.2018') | df_telia.time.str.startswith('23.1.2018') | df_telia.time.str.startswith('24.1.2018')| df_telia.time.str.startswith('25.1.2018')| df_telia.time.str.startswith('26.1.2018') | df_telia.time.str.startswith('27.1.2018')]
+        print(selected_day)
+        df_filtered = df_telia #[df_telia.time.str.startswith('21.1.2018') | df_telia.time.str.startswith('22.1.2018') | df_telia.time.str.startswith('23.1.2018') | df_telia.time.str.startswith('24.1.2018')| df_telia.time.str.startswith('25.1.2018')| df_telia.time.str.startswith('26.1.2018') | df_telia.time.str.startswith('27.1.2018')]
     def hour(ts):
         return int(ts.time[-8:-6])
     df_filtered['hour'] = df_filtered.apply(hour, axis=1)
