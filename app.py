@@ -38,11 +38,17 @@ money_data = {60: 'Front', 26: 'Center aisles', 17: 'Back'}
 app.layout = html.Div(children=[
     html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
 
-    html.H5(
-        '',
-        id='time_range_text',
-        style={'text-align': 'right'}
-    ),
+
+    html.Div([
+        html.H5(
+            'Time Period',
+            id='time_range_label',
+        ),
+        html.H5(
+            '',
+            id='time_range_text',
+        ),
+    ], className='header'),
 
     dcc.RangeSlider(
         id='time_slider',
@@ -53,32 +59,16 @@ app.layout = html.Div(children=[
         value=[min_time, max_time]
     ),
 
-    # html.Div(
-    # [
-    #         html.H5(
-    #             '',
-    #             id='well_text',
-    #             className='two columns'
-    #         ),
-    #         html.H5(
-    #             '',
-    #             id='production_text',
-    #             className='eight columns',
-    #             style={'text-align': 'center'}
-    #         ),
-    #         html.H5(
-    #             '',
-    #             id='year_text',
-    #             className='two columns',
-    #             style={'text-align': 'right'}
-    #         ),
-    #     ],
-    dcc.Graph(
-        id='money-graph',
+    html.Div([
+        dcc.Graph(
+            id='noisy-graph',
+        ),
+        dcc.Graph(
+            id='money-graph',
+        ),
+    ], className='heatmaps'
     ),
-    dcc.Graph(
-        id='noisy-graph',
-    ),
+
     dcc.Graph(
         id='telia-graph',
     ),
