@@ -9,6 +9,7 @@ import plotly.graph_objs as go
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app.title = 'Shoppy Insights'
 
 # df = pd.read_csv('processed_output.csv')
 df = pd.read_csv('../backend/data/location_data_processed.csv')
@@ -24,6 +25,9 @@ df3 = pd.read_csv('../backend/data/noisy_location_processed.csv')
 
 # x_range = df2['SepalWidth'].min()
 # y_range = df2['SepalWidth'].min()
+
+time_data = {309: 'front', 342: 'middle', 430: 'end'}
+money_data = {60: 'front', 26: 'middle', 17: 'end'}
 
 app.layout = html.Div(children=[
     html.H1(children='Shoppy Insights',style={'textAlign': 'center'}),
@@ -156,8 +160,59 @@ app.layout = html.Div(children=[
                            showgrid=False, zeroline=False, ticks='', showticklabels=False, showline=True, mirror=True),
             )
         }
+    ),
+    dcc.Graph(
+        id='telia-graph',
+    ),
+    dcc.Dropdown(
+        id='telia-dropdown',
+        options=[
+            {'label': 'Sunday', 'value': 'sun'},
+            {'label': 'Monday', 'value': 'mon'},
+            {'label': 'Tuesday', 'value': 'tue'},
+            {'label': 'Wednesday', 'value': 'wed'}
+        ],
+        value='sun'
     )
 ])
+
+
+@app.callback(
+    dash.dependencies.Output('telia-graph', 'figure'),
+    [dash.dependencies.Input('telia-dropdown', 'value')])
+def update_figure(selected_day):
+    df_telia = pd.read_csv('../backend/data/telia_activity.txt')
+    df_telia = df_telia[df_telia.dominant_zone == 212]
+    if selected_day == 'sun':
+        df_filtered = df_telia[df_telia.time.str.startswith('21.1.2018')]
+    if selected_day == 'mon':
+        df_filtered = df_telia[df_telia.time.str.startswith('22.1.2018')]
+    if selected_day == 'tue':
+        df_filtered = df_telia[df_telia.time.str.startswith('23.1.2018')]
+    if selected_day == 'wed':
+        df_filtered = df_telia[df_telia.time.str.startswith('24.1.2018')]
+    else: 
+        df_filtered = df_telia[df_telia.time.str.startswith('21.1.2018') | df_telia.time.str.startswith('22.1.2018') | df_telia.time.str.startswith('23.1.2018') | df_telia.time.str.startswith('24.1.2018')| df_telia.time.str.startswith('25.1.2018')| df_telia.time.str.startswith('26.1.2018') | df_telia.time.str.startswith('27.1.2018')]
+    def hour(ts):
+        return int(ts.time[-8:-6])
+    df_filtered['hour'] = df_filtered.apply(hour, axis=1)
+    df_sorted = df_filtered.sort_values(by='hour')
+    
+    return {
+            'data': [
+                go.Bar(
+                    x=df_sorted['hour'],
+                    y=df_sorted['count']/500
+                    ),
+            ],
+            'layout': go.Layout(
+                title="Longitudinal Store Activity",
+                autosize=False,
+                width=800,
+                height=800
+            )
+        }
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
