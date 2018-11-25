@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output
 from datetime import datetime
 # import colorlover as cl
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://fonts.googleapis.com/css?family=Catamaran', 'https://fonts.googleapis.com/css?family=Fredoka One']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Shoppy Insights'
