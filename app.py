@@ -41,9 +41,9 @@ labels = ['Front', 'Center aisles', 'Back']
 app.layout = html.Div(children=[
     html.H1(children='Shoppy: Data Insights',style={'textAlign': 'center', 'fontSize': '50'}),
 
-    dcc.Tabs(id="tabs", value='tab-1', children=[
-        dcc.Tab(label='Tab one', value='tab-1'),
-        dcc.Tab(label='Tab two', value='tab-2'),
+    dcc.Tabs(id="tabs", parent_className='custom-tabs', value='tab-1', children=[
+        dcc.Tab(label='Shopper Location and Purchase Density', value='tab-1', className='custom-tab'),
+        dcc.Tab(label='Store Activity by Hour and Location', value='tab-2', className='custom-tab'),
     ]),
     html.Div(id='tabs-content')
 ])
